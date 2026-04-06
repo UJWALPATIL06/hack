@@ -17,7 +17,7 @@ export function Footer() {
           </p>
 
           <div className="flex gap-3">
-            <button className="w-9 h-9 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center">
+            {/* <button className="w-9 h-9 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center">
               <Linkedin className="w-5 h-5" />
             </button>
             <button className="w-9 h-9 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center">
@@ -28,7 +28,7 @@ export function Footer() {
             </button>
             <button className="w-9 h-9 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center">
               <Youtube className="w-5 h-5" />
-            </button>
+            </button> */}
           </div>
         </div>
 
@@ -38,7 +38,7 @@ export function Footer() {
             Dextro
           </p>
           <p className="text-gray-400 text-sm">
-              Designed by Team Dextro for Pentas Insulations Pvt Ltd &hearts;
+              Designed by Team Dextro for Pentas Insulations Pvt Ltd &#10084;
           </p>
         </div>
 
