@@ -1,6 +1,6 @@
 
 
-const materials = require("../config/materials.config");
+const materials = require("../config/materials.config.js");
 
 const computeWallService = (data) => {
   const layers = data.layers || [];
