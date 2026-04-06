@@ -1,0 +1,27 @@
+{
+  "name": "hack",
+  "version": "1.0.0",
+  "description": "No desc",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"npm run dev --prefix frontend\" \"npm start --prefix backend\"",
+    "frontend": "npm run dev --prefix frontend",
+    "backend": "npm start --prefix backend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BhushanVidhate-27/hackathonRepo1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/BhushanVidhate-27/hackathonRepo1/issues"
+  },
+  "homepage": "https://github.com/BhushanVidhate-27/hackathonRepo1#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
