@@ -2,7 +2,11 @@ const express = require("express");
 const app = express();
 const path = require("path");
 let port = 8080;
-
+const materials = {
+    brick: 0.72,
+    insulation: 0.04,
+    steel: 50
+};
 
 
 app.use(express.json());
@@ -26,7 +30,8 @@ app.post("/compute", (req, res)=>{//3 components 1var 2 formulas 3result
     //formulas. 
     //1  conduction thermal  resistance r = dx / a* k
     for(let layer of layers) {
-        let r = layer.thickness / layer.k;
+        let k = layer.k || materials[layer.material];
+        let r = layer.thickness / k;
         totalRes += r;
     }
     //convection res r = 1/ha
@@ -41,7 +46,8 @@ app.post("/compute", (req, res)=>{//3 components 1var 2 formulas 3result
 
 
     for(let layer of layers) {
-        let r = layer.thickness / layer.k;//calculage temp drop through each level or wall using its delta T val 
+        let k = layer.k || materials[layer.material];
+        let r = layer.thickness / k;//calculage temp drop through each level or wall using its delta T val 
         let deltaT = q * r;
         ct = ct - deltaT;
         temp.push(ct);
