@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router";
 import { Button } from "../ui/button";
-import { Activity, Home, BarChart3, Layers, GitCompare, Sparkles, Zap, FileText } from "lucide-react";
+import { Activity, Home, BarChart3, Layers, GitCompare, FileText } from "lucide-react";
 
 export function DashboardNav() {
   const location = useLocation();
@@ -10,8 +10,6 @@ export function DashboardNav() {
     { path: "/results", label: "Results", icon: BarChart3 },
     { path: "/visualization", label: "Visualization", icon: Layers },
     { path: "/comparison", label: "Compare", icon: GitCompare },
-    { path: "/ai-recommendation", label: "AI Insights", icon: Sparkles },
-    { path: "/energy-savings", label: "Savings", icon: Zap },
     { path: "/report", label: "Report", icon: FileText },
   ];
 
@@ -20,7 +18,7 @@ export function DashboardNav() {
       <div className="max-w-[1440px] mx-auto px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center">
+          <Link to="/#top" className="flex items-center">
             <span className="text-lg text-[#0A2540]">Thermal Analysis</span>
           </Link>
 

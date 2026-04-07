@@ -3,8 +3,9 @@ import { Button } from "../../components/ui/button";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 import { motion } from "motion/react";
 import React, { useEffect, useMemo, useState } from "react";
-import { Award } from "lucide-react";
+import { Award, Star, TrendingUp } from "lucide-react";
 import { apiFetch } from "../../lib/api";
+import { readMaterialUsageStats } from "../../lib/materialUsage";
 
 type SimulationParams = {
   layers: { thickness: number; k: number; material?: string }[];
@@ -63,6 +64,7 @@ export function ComparisonScreen() {
 
   const [idealResult, setIdealResult] = useState<SimulationResult | null>(null);
   const [idealMaterial, setIdealMaterial] = useState<string | null>(null);
+  const [bestMaterial, setBestMaterial] = useState<{ name: string; k: number } | null>(null);
   const [error, setError] = useState<string>("");
 
   useEffect(() => {
@@ -71,18 +73,23 @@ export function ComparisonScreen() {
       try {
         if (!currentParams) throw new Error("Missing current simulation inputs.");
         const materials = await apiFetch<Record<string, number>>("/api/materials");
-        const copperK = (materials || {}).copper;
-        if (typeof copperK !== "number" || copperK <= 0) {
-          throw new Error("Copper is not available in backend materials config.");
-        }
+        const entries = Object.entries(materials || {}).filter(([, v]) => typeof v === "number" && v > 0);
+        if (!entries.length) throw new Error("No materials available in backend materials config.");
 
-        // "Good real-world material": use copper for the insulation (middle) layer only.
+        // Best material = lowest-k (commonly ideal for insulation layers).
+        const [bestName, bestK] = entries.reduce(
+          (best, cur) => (cur[1] < best[1] ? cur : best),
+          entries[0]
+        );
+        if (!cancelled) setBestMaterial({ name: bestName, k: bestK });
+
+        // Optimized configuration: use best (lowest-k) material for the insulation (middle) layer only.
         const layers = currentParams.layers || [];
         const insulationIndex = layers.length >= 2 ? 1 : 0;
         const idealParams: SimulationParams = {
           ...currentParams,
           layers: layers.map((l, idx) =>
-            idx === insulationIndex ? { ...l, k: copperK, material: "copper" } : l
+            idx === insulationIndex ? { ...l, k: bestK, material: bestName } : l
           ),
         };
 
@@ -92,7 +99,7 @@ export function ComparisonScreen() {
         });
 
         if (cancelled) return;
-        setIdealMaterial("copper");
+        setIdealMaterial(bestName);
         setIdealResult(res);
       } catch (e: any) {
         if (cancelled) return;
@@ -135,6 +142,8 @@ export function ComparisonScreen() {
     };
   }, [currentParams, currentResult, idealResult]);
 
+  const usage = useMemo(() => readMaterialUsageStats(), []);
+
   return (
     <div className="min-h-screen bg-[#F8F9FB] py-8">
       <div className="max-w-[1440px] mx-auto px-8">
@@ -170,6 +179,56 @@ export function ComparisonScreen() {
           </Card>
         ) : (
           <>
+        {/* Recommendations / Popular */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          <Card className="p-6 border-gray-200">
+            <div className="flex items-center gap-2 mb-4">
+              <Star className="w-5 h-5 text-[#3A86FF]" />
+              <h2 className="text-lg text-[#0A2540]">Best Material Recommendation</h2>
+            </div>
+            {bestMaterial ? (
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#0A2540]">
+                  <span className="font-semibold">{bestMaterial.name}</span>
+                </div>
+                <div className="text-sm text-gray-600">
+                  Suggested for insulation layer (lowest \(k\)):{" "}
+                  <span className="font-semibold text-gray-800">{bestMaterial.k.toFixed(4)} W/m·K</span>
+                </div>
+              </div>
+            ) : (
+              <div className="text-sm text-gray-600">Loading recommendation…</div>
+            )}
+          </Card>
+
+          <Card className="p-6 border-gray-200">
+            <div className="flex items-center gap-2 mb-4">
+              <TrendingUp className="w-5 h-5 text-green-600" />
+              <h2 className="text-lg text-[#0A2540]">Popular / Average Used</h2>
+            </div>
+            <div className="flex flex-wrap gap-2 mb-3">
+              {usage.topMaterials.length ? (
+                usage.topMaterials.map((m) => (
+                  <div
+                    key={m.name}
+                    className="px-3 py-1 rounded-full bg-white border border-gray-200 text-sm text-gray-700"
+                  >
+                    {m.name} <span className="text-gray-500">({m.count})</span>
+                  </div>
+                ))
+              ) : (
+                <div className="text-sm text-gray-600">Run a few simulations to see popular materials here.</div>
+              )}
+            </div>
+            <div className="text-sm text-gray-600">
+              Average layer \(k\) across your runs:{" "}
+              <span className="font-semibold text-gray-800">
+                {usage.averageK === null ? "—" : `${usage.averageK.toFixed(4)} W/m·K`}
+              </span>
+            </div>
+          </Card>
+        </div>
+
         {/* Comparison Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
           {/* Configuration A */}
@@ -214,10 +273,10 @@ export function ComparisonScreen() {
           >
             <Card className="p-6 border-2 border-green-200 bg-green-50">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl text-[#0A2540]">Configuration B (Copper layer)</h2>
+                <h2 className="text-xl text-[#0A2540]">Configuration B (Recommended layer)</h2>
                 <div className="flex items-center gap-1 px-3 py-1 bg-green-600 text-white text-sm rounded-full">
                   <Award className="w-3 h-3" />
-                  Real-world
+                  Optimized
                 </div>
               </div>
 
@@ -333,7 +392,7 @@ export function ComparisonScreen() {
                 <div className="text-3xl text-purple-600 mb-2">{idealMaterial || "Best"}</div>
                 <div className="text-sm text-gray-700 mb-2">Ideal Material Used</div>
                 <div className="text-xs text-gray-600">
-                  Optimized configuration uses the single best (lowest‑k) material from the backend materials list.
+                  Optimized configuration uses the single best (lowest-k) material from the backend materials list.
                 </div>
               </div>
             </div>

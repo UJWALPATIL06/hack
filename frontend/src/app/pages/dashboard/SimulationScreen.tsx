@@ -6,6 +6,7 @@ import { motion } from "motion/react";
 import { CheckCircle2, XCircle } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { apiFetch } from "../../lib/api";
+import { recordMaterialUsageFromParams } from "../../lib/materialUsage";
 
 type ComputeResponse = {
   resistance: number;
@@ -35,6 +36,15 @@ export function SimulationScreen() {
       try {
         const params = JSON.parse(sessionStorage.getItem("simulationParams") || "null");
         if (!params) throw new Error("Missing simulation inputs. Please start a new simulation.");
+
+        // Track popular/average-used materials across runs (best-effort).
+        // We only store local UI stats by mapping each layer's k to the closest backend material.
+        try {
+          const materials = await apiFetch<Record<string, number>>("/api/materials");
+          recordMaterialUsageFromParams(params, materials || {});
+        } catch {
+          // ignore analytics failures
+        }
 
         const result = await apiFetch<ComputeResponse>("/api/compute", {
           method: "POST",

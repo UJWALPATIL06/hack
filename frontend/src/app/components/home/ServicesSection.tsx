@@ -1,5 +1,5 @@
 import { Card } from "../ui/card";
-import { Thermometer, Brain, LineChart, AlertTriangle, Building2, FileText } from "lucide-react";
+import { Thermometer, LineChart, AlertTriangle, Building2, FileText } from "lucide-react";
 import { motion } from "motion/react";
 
 const services = [
@@ -8,12 +8,6 @@ const services = [
     title: "CFD Thermal Simulation",
     description: "Advanced computational fluid dynamics engine that simulates precise temperature distribution across composite wall structures with industry-leading accuracy.",
     color: "from-red-500 to-orange-500"
-  },
-  {
-    icon: Brain,
-    title: "AI Material Optimization",
-    description: "Machine learning algorithms analyze thousands of material combinations to recommend the optimal configuration for your specific thermal requirements.",
-    color: "from-purple-500 to-pink-500"
   },
   {
     icon: LineChart,
@@ -44,7 +38,7 @@ const services = [
 export function ServicesSection() {
   return (
     <section id="services" className="py-24 bg-white">
-      <div className="max-w-[1440px] mx-auto px-8">
+      <div className="max-w-[1440px] mx-auto px-6 sm:px-8">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -65,7 +59,7 @@ export function ServicesSection() {
         </motion.div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="flex flex-wrap justify-center gap-8">
           {services.map((service, index) => {
             const Icon = service.icon;
             return (
@@ -76,8 +70,9 @@ export function ServicesSection() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 whileHover={{ y: -8, transition: { duration: 0.2 } }}
+                className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.333rem)]"
               >
-                <Card className="p-8 h-full hover:shadow-xl transition-all duration-300 border-gray-200 group cursor-pointer">
+                <Card className="p-8 h-full hover:shadow-xl transition-all duration-300 border-gray-200 group cursor-pointer max-w-[420px] mx-auto">
                   <h3 className="text-xl text-[#0A2540] mb-3">
                     {service.title}
                   </h3>

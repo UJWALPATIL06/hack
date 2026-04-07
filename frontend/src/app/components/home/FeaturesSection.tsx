@@ -1,27 +1,33 @@
 import { motion } from "motion/react";
-import { Activity, Cpu, TrendingUp, Factory } from "lucide-react";
+import { Activity, TrendingUp } from "lucide-react";
+import codSimulationEngineImg from "../../../assets/cod-simulation-engine.svg";
+import realTimeGraphImg from "../../../assets/real-time-graph.svg";
 
 const features = [
   {
     icon: Activity,
-    title: "CFD Simulation Engine",
+    title: "COD Simulation Engine",
     description: "Our proprietary computational fluid dynamics engine delivers precision thermal analysis with 95%+ accuracy. Utilizing advanced finite element methods, it simulates heat transfer across complex multi-layer composite structures in real-time.",
     stats: [
       { label: "Accuracy", value: "95%" },
       { label: "Speed", value: "<30s" }
     ],
-    imageGradient: "from-red-500 via-orange-500 to-yellow-500"
+    imageGradient: "from-red-500 via-orange-500 to-yellow-500",
+    imageSrc: codSimulationEngineImg,
+    imageAlt: "COD simulation engine visualization"
   },
   
   {
     icon: TrendingUp,
-    title: "Real-Time Interactive Graphs",
+    title: "Real-time Graph",
     description: "Dynamic visualizations update instantly as you adjust parameters. Drag sliders to see temperature curves, heat flux, and energy efficiency metrics change in real-time, enabling rapid design iteration.",
     stats: [
       { label: "Response Time", value: "<100ms" },
       { label: "Data Points", value: "10k+" }
     ],
-    imageGradient: "from-blue-500 via-cyan-500 to-teal-500"
+    imageGradient: "from-blue-500 via-cyan-500 to-teal-500",
+    imageSrc: realTimeGraphImg,
+    imageAlt: "Real-time graph visualization"
   },
  
 ];
@@ -29,7 +35,7 @@ const features = [
 export function FeaturesSection() {
   return (
     <section id="features" className="py-24 bg-[#F8F9FB]">
-      <div className="max-w-[1440px] mx-auto px-8">
+      <div className="max-w-[1440px] mx-auto px-6 sm:px-8">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -50,7 +56,7 @@ export function FeaturesSection() {
         </motion.div>
 
         {/* Features List */}
-        <div className="space-y-32">
+        <div className="space-y-24">
           {features.map((feature, index) => {
             const Icon = feature.icon;
             const isEven = index % 2 === 0;
@@ -68,8 +74,13 @@ export function FeaturesSection() {
                 <div className={`${!isEven ? 'lg:order-2' : ''}`}>
                   <div className="relative">
                     <div className={`aspect-[4/3] rounded-2xl bg-gradient-to-br ${feature.imageGradient} p-1`}>
-                      <div className="w-full h-full bg-white rounded-xl p-8 flex items-center justify-center">
-                        <Icon className="w-32 h-32 text-gray-300" />
+                      <div className="w-full h-full bg-white rounded-xl p-6 flex items-center justify-center">
+                        <img
+                          src={feature.imageSrc}
+                          alt={feature.imageAlt}
+                          className="w-full h-full object-contain"
+                          loading="lazy"
+                        />
                       </div>
                     </div>
                     
