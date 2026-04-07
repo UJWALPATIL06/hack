@@ -1,7 +1,7 @@
 import { Card } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { motion } from "motion/react";
-import { FileText, Download, Share2, Printer, Calendar, Building2, User, Mail } from "lucide-react";
+import { Download, Share2, Printer, Calendar, Building2, User, Mail } from "lucide-react";
 
 export function ReportPreview() {
   const currentDate = new Date().toLocaleDateString('en-US', { 
@@ -87,9 +87,8 @@ export function ReportPreview() {
               </h2>
               <p className="text-gray-700 leading-relaxed mb-4">
                 This report presents a comprehensive thermal analysis of a three-layer composite wall system 
-                using advanced Computational Fluid Dynamics (CFD) simulation and AI-powered optimization. 
-                The analysis evaluates heat transfer characteristics, energy efficiency, and provides 
-                data-driven recommendations for performance improvement.
+                using advanced Computational Fluid Dynamics (CFD) simulation. The analysis evaluates heat
+                transfer characteristics and overall thermal performance across the composite structure.
               </p>
               
               <div className="grid grid-cols-3 gap-4 mt-6">
@@ -201,55 +200,10 @@ export function ReportPreview() {
                     <div>
                       <div className="text-gray-900 mb-1">Energy Performance</div>
                       <div className="text-sm text-gray-600">
-                        Current configuration achieves 94.2% thermal efficiency with annual energy costs 
-                        estimated at ₹48,000. Optimization potential identified for 30% cost reduction.
+                        Current configuration achieves 94.2% thermal efficiency. Further improvements can be
+                        evaluated by iterating layer thickness and material selection.
                       </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* Recommendations */}
-            <section className="mb-10">
-              <h2 className="text-2xl text-[#0A2540] mb-4 pb-2 border-b border-gray-200">
-                AI-Powered Recommendations
-              </h2>
-              
-              <div className="space-y-4">
-                <div className="p-5 bg-green-50 rounded-lg border-l-4 border-green-600">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="text-lg text-gray-900">High Priority: Increase Insulation Thickness</div>
-                    <div className="px-3 py-1 bg-green-600 text-white text-xs rounded-full">Recommended</div>
-                  </div>
-                  <div className="text-sm text-gray-700 mb-3">
-                    Increase middle layer from 5cm to 10cm to reduce heat flux by 34% and achieve 
-                    annual savings of ₹14,400 with 18-month ROI.
-                  </div>
-                  <div className="grid grid-cols-3 gap-3 text-sm">
-                    <div className="p-2 bg-white rounded">
-                      <div className="text-gray-600">Energy Savings</div>
-                      <div className="text-green-600 font-semibold">30%</div>
-                    </div>
-                    <div className="p-2 bg-white rounded">
-                      <div className="text-gray-600">Cost Reduction</div>
-                      <div className="text-green-600 font-semibold">₹14,400/yr</div>
-                    </div>
-                    <div className="p-2 bg-white rounded">
-                      <div className="text-gray-600">ROI Period</div>
-                      <div className="text-green-600 font-semibold">18 months</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="p-5 bg-blue-50 rounded-lg border-l-4 border-blue-600">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="text-lg text-gray-900">Medium Priority: Material Optimization</div>
-                    <div className="px-3 py-1 bg-blue-600 text-white text-xs rounded-full">Consider</div>
-                  </div>
-                  <div className="text-sm text-gray-700">
-                    Replace brick with advanced composite material to achieve 12% additional energy savings 
-                    while maintaining structural integrity.
                   </div>
                 </div>
               </div>
@@ -262,11 +216,9 @@ export function ReportPreview() {
               </h2>
               <p className="text-gray-700 leading-relaxed">
                 The thermal analysis demonstrates that the current composite wall configuration achieves good 
-                thermal performance with 94.2% efficiency. However, CFD simulation and AI analysis reveal 
-                significant optimization opportunities. By implementing the high-priority recommendation of 
-                increasing insulation thickness, the system can achieve 30% energy savings (₹14,400 annually) 
-                with a favorable 18-month return on investment. The environmental impact includes reducing 
-                CO₂ emissions by 8.5 tons per year, equivalent to planting 142 trees.
+                thermal performance with 94.2% efficiency. You can further improve performance by testing
+                alternate materials and thicknesses and comparing temperature profiles and heat flux across
+                configurations.
               </p>
             </section>
 

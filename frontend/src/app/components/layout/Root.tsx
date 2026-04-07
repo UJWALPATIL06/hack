@@ -9,8 +9,6 @@ export function Root() {
                       location.pathname.includes('results') ||
                       location.pathname.includes('visualization') ||
                       location.pathname.includes('comparison') ||
-                      location.pathname.includes('ai-recommendation') ||
-                      location.pathname.includes('energy-savings') ||
                       location.pathname.includes('report');
 
   return (
