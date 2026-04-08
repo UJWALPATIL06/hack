@@ -1,13 +1,16 @@
 const express = require("express");
+
 const router = express.Router();
 
-// The frontend "Export PDF" currently expects a backend-generated JSON blob.
-// Keeping this lightweight also prevents backend startup crashes if report
-// generation is not implemented yet.
+// Simple backend-generated "report" export.
+// For now we return the request body as a downloadable JSON file.
 router.post("/report/json", (req, res) => {
-  // Provide a stable filename for the download helper.
-  res.setHeader("content-disposition", 'attachment; filename="thermal-report.json"');
-  res.json(req.body);
+  const payload = req.body ?? null;
+  const filename = `thermal-report-${new Date().toISOString().slice(0, 10)}.json`;
+
+  res.setHeader("content-type", "application/json; charset=utf-8");
+  res.setHeader("content-disposition", `attachment; filename="${filename}"`);
+  res.status(200).send(JSON.stringify(payload, null, 2));
 });
 
 module.exports = router;
